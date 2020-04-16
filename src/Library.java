@@ -37,7 +37,12 @@ public class Library {
             System.out.println("  4) Return a Book");
             System.out.println("  5) Quit");
             System.out.println("");
-            var menuChoice = enterOnlyNum("Please make a selection: ");
+            var menuChoice = enterOnlyNumInRange("Please make a selection: ", 1, 5);
+
+            switch(menuChoice) {
+                case 1:
+                    inventory(books);
+            }
         }
 
 
@@ -50,12 +55,26 @@ public class Library {
 
     }
 
-    public static int enterOnlyNum(String message) {
+    public static void inventory(String[] bookList) {
+        System.out.println("");
+        for (int i = 0; i < bookList.length; i++) {
+            System.out.println((i + 1) + ". " + bookList[i]);
+        }
+        System.out.println("");
+        var finished = enterOnlyStr("Would you like to go back to the menu? (y/n) ", "y", "n");
+        if (finished.equals("n")) {
+            System.exit(0);
+        } else {
+            System.out.println("");
+        }
+    }
+
+    public static int enterOnlyNumInRange(String message, int smallest, int largest) {
         var in = new Scanner(System.in);
         System.out.print(message);
         var strNum = in.next();
-        if (!isNum(strNum)) {
-            while (!isNum(strNum)) {
+        if (!isNum(strNum) && parseInt(strNum) >= smallest && parseInt(strNum) <= largest) {
+            while (!isNum(strNum) && parseInt(strNum) >= smallest && parseInt(strNum) <= largest) {
                 System.out.println("Incorrect Input, try again");
                 System.out.print(message);
                 strNum = in.next();
@@ -68,12 +87,13 @@ public class Library {
 
     public static String enterOnlyStr(String message, String option1, String option2) {
         var in = new Scanner(System.in);
-        var str = in.nextLine();
+        System.out.print(message);
+        var str = in.next();
         if (!str.equals(option1) && !str.equals(option2)) {
             while (!str.equals(option1) && !str.equals(option2)) {
                 System.out.println("Incorrect Input, try again");
-                System.out.println(message);
-                str = in.nextLine();
+                System.out.print(message);
+                str = in.next();
             }
         }
         return str;
